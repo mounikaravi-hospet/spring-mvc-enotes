@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org" th:replace="~{base::Layout(~{::title}, ~{::section})}">
+<head>
+	<meta charset="UTF-8">
+	<title>View Notes</title>
+	</head>
+	<body>
+		<section>
+		<div class="container-fluid p-2">
+			<h4 class="text-center">My Notes</h4>
+			<th:block th:if="${session.msg}">
+				<p class="fs-5 text-center text-success">[[${session.msg}]]</p>
+				<th:block th:text="${@accountServiceImpl.removeSessionMessage()}"></th:block>
+			</th:block>
+			<div class="row">
+				<div th:each="n:${notes}" class="col-md-10 offset-md-1 mt-2">
+					<div class="card shadow p-1 mb-1 bg-body rounded-3">
+						<div class="card-header bg-secondary text-light">
+							<i class="fa-solid fa-book"></i><span class="fw-bold p-2 " >[[${n.title}]]</span>
+								
+						</div>
+						<div class="card-body">
+								
+								<p>[[${n.description}]]</p>
+								<p>Publish Date : <span class="fw-bold text-primary"> [[${n.date}]] </span> </p>
+
+							<div>
+								<a th:href="@{'editNotes/'+${n.id}}" class="btn btn-primary btn-sm">Edit</a> 
+								<a th:href="@{'deleteNotes/'+${n.id}}" class="btn btn-danger btn-sm">Delete</a>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="row mt-3">
+			<div class="col-md-4 offset-md-1 text-right p-3">
+				<p class="fw-bold">Total Notes: [[${totalNotes}]] </p>
+			</div>
+				<div class="col-md-5">
+					<nav aria-label="Page navigation example">
+						<ul class="pagination">
+					    	<li class="page-item" th:if="${currentPage!=0}">
+					      		<a class="page-link" th:href="@{'/user/viewNotes?pageNo='+${currentPage-1}}" aria-label="Previous">
+					        		<span aria-hidden="true">&laquo;</span>
+					      		</a>
+					    	</li>
+					    	
+						    <li class="page-item" th:each="i:${#numbers.sequence(1, totalPages)}" th:classappend="${currentPage==i-1 ? 'active':''}">
+						    	<a class="page-link" th:href="@{'/user/viewNotes?pageNo='+${i-1}}">[[${i}]]</a>
+						    </li>
+						    
+						    <li class="page-item" th:if="${currentPage+1!=totalPages}">
+					      		<a class="page-link" th:href="@{'/user/viewNotes?pageNo='+${currentPage+1}}" aria-label="Next">
+					        		<span aria-hidden="true">&raquo;</span>
+					      		</a>
+					    	</li>
+					  	</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+
+	</section>
+</body>
+	</body>
+</html>
